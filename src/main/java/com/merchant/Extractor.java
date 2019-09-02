@@ -1,8 +1,7 @@
 package com.merchant;
 
 /**
- * @author zzz
- * @date 2019/8/30 16:44
+ * @author created by zzz at 2019/9/2 16:44
  **/
 
 public interface Extractor {

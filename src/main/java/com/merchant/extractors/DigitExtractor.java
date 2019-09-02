@@ -6,8 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @author zzz
- * @date 2019/9/2 18:26
+ * @author created by zzz at 2019/9/2 18:26
  **/
 @PreExtractors(RomanNumeralExtractor.class)
 public class DigitExtractor implements Extractor {
@@ -40,6 +39,8 @@ public class DigitExtractor implements Extractor {
             if (current.compare(next) < 0 && current.canBeSubtractedBy(next)) {
                 temp = next.value - current.value;
                 i++;
+                successionRoman = next;
+                successionTimes = 1;
             }
             value += temp;
             i++;

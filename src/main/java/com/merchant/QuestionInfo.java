@@ -3,6 +3,9 @@ package com.merchant;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @author created by zzz at 2019/9/2 15:24
+ */
 public class QuestionInfo {
 
   /**

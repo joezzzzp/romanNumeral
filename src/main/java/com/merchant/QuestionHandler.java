@@ -1,5 +1,8 @@
 package com.merchant;
 
+/**
+ * @author created by zzz at 2019/9/2 17:25:
+ */
 public interface QuestionHandler {
 
   /**

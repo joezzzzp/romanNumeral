@@ -6,17 +6,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author zzz
- * @date 2019/9/2 16:05
+ * @author created by zzz at 2019/9/2 16:05
  **/
 
-public class ExtractorChain {
+class ExtractorChain {
 
     private List<Extractor> extractors = new LinkedList<>();
 
     private QuestionInfo questionInfo;
 
-    public ExtractorChain(String src, Class<?> clazz, Map<Class<? extends Extractor>, Extractor> pool) {
+    ExtractorChain(String src, Class<?> clazz, Map<Class<? extends Extractor>, Extractor> pool) {
         questionInfo = new QuestionInfo(src);
         PreExtractors ann = clazz.getAnnotation(PreExtractors.class);
         if (ann != null) {

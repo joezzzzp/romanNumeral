@@ -8,8 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author zzz
- * @date 2019/9/2 18:32
+ *  * @author created by zzz at 2019/9/2 18:32
  **/
 @PreExtractors({RomanNumeralExtractor.class, DigitExtractor.class})
 public class MetalOrDirtExtractor implements Extractor {

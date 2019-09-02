@@ -1,10 +1,5 @@
 package com.merchant;
 
-import com.merchant.extractors.DigitExtractor;
-import com.merchant.extractors.MetalOrDirtExtractor;
-import com.merchant.extractors.RomanNumeralExtractor;
-import com.merchant.handlers.HowManyQuestionHandler;
-import com.merchant.handlers.HowMuchQuestionHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 
 public class MerchantGuideApp {
+
+  private static final String CLASS_FILE_EXTEND_NAME = ".class";
 
   private static final Logger logger = LogManager.getLogger(MerchantGuideApp.class);
 
@@ -50,7 +47,7 @@ public class MerchantGuideApp {
   }
 
   private static void mainProcess(BufferedReader reader) throws IOException {
-    initComponents("com.zzz.merchant");
+    initComponents();
     String line;
     while ((line = reader.readLine()) != null) {
       line = line.trim();
@@ -58,7 +55,7 @@ public class MerchantGuideApp {
         if (line.endsWith("?")) {
           handleQuestion(line);
         } else {
-          updateTranslator(line);
+          updateExtractor(line);
         }
       } catch (UnintelligibleException e) {
         logger.info(e.getMessage());
@@ -66,12 +63,89 @@ public class MerchantGuideApp {
     }
   }
 
-  private static void initComponents(String packageName) {
-    handlers.add(new HowMuchQuestionHandler());
-    handlers.add(new HowManyQuestionHandler());
-    extractors.put(RomanNumeralExtractor.class, new RomanNumeralExtractor());
-    extractors.put(DigitExtractor.class, new DigitExtractor());
-    extractors.put(MetalOrDirtExtractor.class, new MetalOrDirtExtractor());
+  /**
+   * Load all Extractors and QuestionHandlers
+   */
+  private static void initComponents() {
+    Class<?>[] validInterfaces = {Extractor.class, QuestionHandler.class};
+    String packageName = "com.merchant";
+    String packagePath = packageName.replace('.', '/');
+    List<String> classFiles = new LinkedList<>();
+    ClassLoader cl = MerchantGuideApp.class.getClassLoader();
+    getAllClass(cl, packagePath, classFiles);
+    for (String path : classFiles) {
+      try {
+        Class<?> clazz = cl.loadClass(path);
+        Class<?> inter = findValidInterface(clazz.getInterfaces(), validInterfaces);
+        if (inter == null) {
+          continue;
+        }
+        if (inter == Extractor.class) {
+          Extractor instance = (Extractor) clazz.newInstance();
+          extractors.put(instance.getClass(), instance);
+        }
+        if (inter == QuestionHandler.class) {
+          QuestionHandler instance = (QuestionHandler) clazz.newInstance();
+          handlers.add(instance);
+        }
+      } catch (ClassNotFoundException e) {
+        logger.error("can't find class", e);
+      } catch (IllegalAccessException e) {
+        logger.error("illegal access", e);
+      } catch (InstantiationException e) {
+        logger.error("can't create instance", e);
+      }
+    }
+  }
+
+  /**
+   * Find all class in path
+   * @param classLoader classLoader
+   * @param path package path
+   * @param classList found classes
+   */
+  private static void getAllClass(ClassLoader classLoader, String path, List<String> classList) {
+    URL url = classLoader.getResource(path);
+    if (url == null) {
+      return;
+    }
+    if (url.getFile() == null) {
+      return;
+    }
+    File file = new File(url.getFile());
+    if (file.isFile()) {
+      if (file.getName().endsWith(CLASS_FILE_EXTEND_NAME)) {
+        String fullPath = file.getPath();
+        String neededPath = fullPath.substring(fullPath.indexOf(path.replace('/', File.separatorChar)));
+        String finalClassName =
+                neededPath.replace(CLASS_FILE_EXTEND_NAME, "").replace(File.separatorChar, '.');
+        classList.add(finalClassName);
+      }
+    } else if (file.isDirectory() && file.list() != null) {
+      File[] files = file.listFiles(pathname -> pathname.isDirectory() || pathname.getName().endsWith(CLASS_FILE_EXTEND_NAME));
+      if (files != null) {
+        for (File item : files) {
+          getAllClass(classLoader, path + "/" + item.getName(), classList);
+        }
+      }
+    }
+  }
+
+  /**
+   * Find needed interface from all interfaces a class implemented
+   * @param allInterfaces all interfaces a class implemented
+   * @param validInterfaces needed interfaces
+   * @return needed interface or null
+   */
+  private static Class<?> findValidInterface(Class<?>[] allInterfaces, Class<?>... validInterfaces) {
+    for (Class<?> i : allInterfaces) {
+      for (Class<?> vi : validInterfaces) {
+        if (i == vi) {
+          return i;
+        }
+      }
+    }
+    return null;
   }
 
   private static void handleQuestion(String question) {
@@ -82,12 +156,12 @@ public class MerchantGuideApp {
     logger.info(answer);
   }
 
-  private static void updateTranslator(String rule) {
-    extractors.forEach((clazz, translator) -> {
-      if (translator.canLearn(rule)) {
-        ExtractorChain extractorChain = new ExtractorChain(rule, translator.getClass(), extractors);
+  private static void updateExtractor(String rule) {
+    extractors.forEach((clazz, extractor) -> {
+      if (extractor.canLearn(rule)) {
+        ExtractorChain extractorChain = new ExtractorChain(rule, extractor.getClass(), extractors);
         extractorChain.extract();
-        translator.learn(extractorChain.getQuestionInfo());
+        extractor.learn(extractorChain.getQuestionInfo());
       }
     });
   }

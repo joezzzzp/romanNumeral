@@ -7,8 +7,7 @@ import com.merchant.PreExtractors;
 import com.merchant.QuestionHandler;
 
 /**
- * @author zzz
- * @date 2019/9/2 18:51
+ * @author created by zzz at 2019/9/2 18:51
  **/
 @PreExtractors({RomanNumeralExtractor.class, DigitExtractor.class})
 public class HowMuchQuestionHandler implements QuestionHandler {

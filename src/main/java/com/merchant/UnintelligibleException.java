@@ -2,6 +2,7 @@ package com.merchant;
 
 /**
  * Custom Exception
+ * @author created by zzz at 2019/9/2 14:26
  */
 public class UnintelligibleException extends RuntimeException {
 
