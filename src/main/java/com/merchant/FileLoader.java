@@ -13,7 +13,7 @@ import java.net.URL;
  * @author created by zzz at 2019/9/12 17:48
  **/
 
-public class FileLoader {
+class FileLoader {
 
     private static final Logger logger = LogManager.getLogger(FileLoader.class);
 
