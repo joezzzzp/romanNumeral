@@ -13,12 +13,22 @@ import java.util.List;
 /**
  * @author created by zzz at 2019/9/3 14:14
  **/
+@SuppressWarnings("unused")
+public class ArabicToRomanExtractor implements Extractor {
 
-public class RomanExtractor implements Extractor {
+    @Override
+    public int getOrder() {
+        return 30;
+    }
+
+    @Override
+    public boolean canExtract(QuestionInfo questionInfo) {
+        return questionInfo.getArabic() != null;
+    }
 
     @Override
     public void extract(QuestionInfo questionInfo) {
-        int value = questionInfo.getDigit();
+        int value = questionInfo.getArabic();
         if (value > 3999 || value < 1) {
             throw new UnintelligibleException("Invalid number");
         }
@@ -28,10 +38,9 @@ public class RomanExtractor implements Extractor {
             digits.push(remainValue % 10);
             remainValue /= 10;
         }
-        questionInfo.getTranslatedSymbols().clear();
         while (!digits.isEmpty()) {
             int length = digits.size();
-            questionInfo.getTranslatedSymbols().addAll(getRomanNumeral(digits.pop(), length));
+            questionInfo.getRomansFromArabic().addAll(getRomanNumeral(digits.pop(), length));
         }
     }
 

@@ -16,17 +16,21 @@ public class QuestionInfo {
   /**
    * The origin symbols in the input source
    */
-  private List<String> originalSymbols = new LinkedList<>();
+  private List<String> originalWords = new LinkedList<>();
 
   /**
    * The translated symbols according to the rules
    */
-  private List<RomanNumeral> translatedSymbols = new LinkedList<>();
+  private List<RomanNumeral> romansFromWords = new LinkedList<>();
 
-    /**
-     * The digit number of translatedSymbols present;
-     */
-  private int digit;
+  /**
+   * The arabic number of romansFromWords present;
+   */
+  private Integer arabicFromRomans;
+
+  private List<RomanNumeral> romansFromArabic = new LinkedList<>();
+
+  private Integer arabic;
 
   /**
    * Record the mentioned metal or dirt in input source
@@ -50,20 +54,44 @@ public class QuestionInfo {
     this.source = source;
   }
 
-  public List<String> getOriginalSymbols() {
-    return originalSymbols;
+  public List<String> getOriginalWords() {
+    return originalWords;
   }
 
-  public void setOriginalSymbols(List<String> originalSymbols) {
-    this.originalSymbols = originalSymbols;
+  public void setOriginalWords(List<String> originalWords) {
+    this.originalWords = originalWords;
   }
 
-  public List<RomanNumeral> getTranslatedSymbols() {
-    return translatedSymbols;
+  public List<RomanNumeral> getRomansFromWords() {
+    return romansFromWords;
   }
 
-  public void setTranslatedSymbols(List<RomanNumeral> translatedSymbols) {
-    this.translatedSymbols = translatedSymbols;
+  public void setRomansFromWords(List<RomanNumeral> romansFromWords) {
+    this.romansFromWords = romansFromWords;
+  }
+
+  public Integer getArabicFromRomans() {
+    return arabicFromRomans;
+  }
+
+  public void setArabicFromRomans(Integer arabicFromRomans) {
+    this.arabicFromRomans = arabicFromRomans;
+  }
+
+  public List<RomanNumeral> getRomansFromArabic() {
+    return romansFromArabic;
+  }
+
+  public void setRomansFromArabic(List<RomanNumeral> romansFromArabic) {
+    this.romansFromArabic = romansFromArabic;
+  }
+
+  public Integer getArabic() {
+    return arabic;
+  }
+
+  public void setArabic(Integer arabic) {
+    this.arabic = arabic;
   }
 
   public String getMetalOrDirt() {
@@ -80,13 +108,5 @@ public class QuestionInfo {
 
   public void setCredits(float credits) {
     this.credits = credits;
-  }
-
-  public int getDigit() {
-    return digit;
-  }
-
-  public void setDigit(int digit) {
-    this.digit = digit;
   }
 }

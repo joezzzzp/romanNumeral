@@ -8,12 +8,22 @@ import java.util.stream.Collectors;
 /**
  * @author created by zzz at 2019/9/2 18:26
  **/
-@PreExtractors(RomanNumeralExtractor.class)
-public class DigitExtractor implements Extractor {
+@SuppressWarnings("unused")
+public class RomanToArabicExtractor implements Extractor {
+
+    @Override
+    public int getOrder() {
+        return 10;
+    }
+
+    @Override
+    public boolean canExtract(QuestionInfo questionInfo) {
+        return !questionInfo.getRomansFromWords().isEmpty();
+    }
 
     @Override
     public void extract(QuestionInfo questionInfo) {
-        List<RomanNumeral> numbers = questionInfo.getTranslatedSymbols();
+        List<RomanNumeral> numbers = questionInfo.getRomansFromWords();
         int value = 0;
         int i = 0;
         RomanNumeral successionRoman = RomanNumeral.NONE;
@@ -45,6 +55,6 @@ public class DigitExtractor implements Extractor {
             value += temp;
             i++;
         }
-        questionInfo.setDigit(value);
+        questionInfo.setArabicFromRomans(value);
     }
 }

@@ -2,22 +2,26 @@ package com.merchant.extractors;
 
 import com.merchant.Extractor;
 import com.merchant.QuestionInfo;
-import com.merchant.PreExtractors;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- *  * @author created by zzz at 2019/9/2 18:32
+ * @author created by zzz at 2019/9/2 18:32
  **/
-@PreExtractors({RomanNumeralExtractor.class, DigitExtractor.class})
+@SuppressWarnings("unused")
 public class MetalOrDirtExtractor implements Extractor {
 
     private Map<String, Float> creditsMapper = new HashMap<>(16);
 
     @Override
-    public boolean canLearn(String rule) {
-        return rule.endsWith("Credits");
+    public int getOrder() {
+        return 20;
+    }
+
+    @Override
+    public boolean canLearn(QuestionInfo questionInfo) {
+        return questionInfo.getSource().endsWith("Credits") && questionInfo.getArabicFromRomans() != null;
     }
 
     @Override
@@ -34,8 +38,13 @@ public class MetalOrDirtExtractor implements Extractor {
             }
         }
         if (null != metalOrDirt) {
-            creditsMapper.put(metalOrDirt, value / questionInfo.getDigit());
+            creditsMapper.put(metalOrDirt, value / questionInfo.getArabicFromRomans());
         }
+    }
+
+    @Override
+    public boolean canExtract(QuestionInfo questionInfo) {
+        return questionInfo.getSource() != null;
     }
 
     @Override

@@ -7,11 +7,17 @@ package com.merchant;
 public interface Extractor {
 
     /**
+     * The order of this extractor in extractor list
+     * @return order
+     */
+    int getOrder();
+
+    /**
      * Check can this translator learn the rule or not
-     * @param rule input rule
+     * @param questionInfo input rule
      * @return can learn or not
      */
-    default boolean canLearn(String rule) {
+    default boolean canLearn(QuestionInfo questionInfo) {
         return false;
     }
 
@@ -24,8 +30,17 @@ public interface Extractor {
     }
 
     /**
+     * Present this extractor can extract info from this question
+     * @param questionInfo constructed question data
+     * @return can extract
+     */
+    boolean canExtract(QuestionInfo questionInfo);
+
+    /**
      * Extract info from question
      * @param questionInfo constructed question data
      */
-    void extract(QuestionInfo questionInfo);
+    default void extract(QuestionInfo questionInfo) {
+
+    }
 }
