@@ -1,4 +1,4 @@
-package com.merchant;
+package com.merchant.components;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,7 +13,7 @@ import java.util.List;
  * @author created by zzz at 2019/9/12 16:49
  **/
 
-class ProcessorInitializer {
+public class ProcessorInitializer {
 
     private static final String CLASS_FILE_EXTEND_NAME = ".class";
 
@@ -23,7 +23,7 @@ class ProcessorInitializer {
 
     private ClassLoader classLoader;
 
-    ProcessorInitializer(ClassLoader classLoader, String rootPackage) {
+    public ProcessorInitializer(ClassLoader classLoader, String rootPackage) {
         this.classLoader = classLoader;
         this.rootPackage = rootPackage;
     }
@@ -77,7 +77,7 @@ class ProcessorInitializer {
     /**
      * Load all Extractors and QuestionHandlers
      */
-    void init(LineProcessor lineProcessor) {
+    public void init(LineProcessor lineProcessor) {
         String packagePath = rootPackage.replace('.', '/');
         List<String> classFiles = new LinkedList<>();
         recordClasses(packagePath, classFiles);

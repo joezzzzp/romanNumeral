@@ -1,5 +1,9 @@
-package com.merchant;
+package com.merchant.components;
 
+import com.merchant.QuestionInfo;
+import com.merchant.UnintelligibleException;
+import com.merchant.extractors.Extractor;
+import com.merchant.handlers.QuestionHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -9,7 +13,7 @@ import java.util.*;
  * @author created by zzz at 2019/9/16 15:08
  **/
 
-class LineProcessor {
+public class LineProcessor {
 
     private static final Logger logger = LogManager.getLogger(LineProcessor.class);
 
@@ -19,7 +23,7 @@ class LineProcessor {
 
     private final List<Extractor> extractors = new ArrayList<>();
 
-    void addComponent(Class<?> clazz) {
+    public void addComponent(Class<?> clazz) {
         Class inter = findValidInterface(clazz.getInterfaces());
         if (inter == null) {
             return;
@@ -32,13 +36,13 @@ class LineProcessor {
         }
     }
 
-    void init() {
+    public void init() {
         if (!extractors.isEmpty()) {
             extractors.sort(Comparator.comparingInt(Extractor::getOrder));
         }
     }
 
-    void process(String line) {
+    public void process(String line) {
         if (line.endsWith("?")) {
             handleQuestion(line);
         } else {

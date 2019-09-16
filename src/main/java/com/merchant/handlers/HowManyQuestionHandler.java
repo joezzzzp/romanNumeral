@@ -1,6 +1,5 @@
 package com.merchant.handlers;
 
-import com.merchant.QuestionHandler;
 import com.merchant.QuestionInfo;
 
 /**

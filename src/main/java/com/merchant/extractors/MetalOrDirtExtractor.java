@@ -1,6 +1,5 @@
 package com.merchant.extractors;
 
-import com.merchant.Extractor;
 import com.merchant.QuestionInfo;
 
 import java.util.HashMap;

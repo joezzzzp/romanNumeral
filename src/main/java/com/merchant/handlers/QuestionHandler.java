@@ -1,4 +1,6 @@
-package com.merchant;
+package com.merchant.handlers;
+
+import com.merchant.QuestionInfo;
 
 /**
  * @author created by zzz at 2019/9/2 17:25:
